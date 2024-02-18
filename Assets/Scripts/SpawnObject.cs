@@ -5,36 +5,22 @@ using UnityEngine;
 public class SpawnObject : MonoBehaviour
 {
     public GameObject spawnLocation;
-    public GameObject alienObject; 
-    public GameObject parentObject;
+    public GameObject ailienObject;
+    public Vector3 location; 
     private bool hasSpawned = false;
-    private GameObject[] children;
 
     void Start()
     {
-        if (parentObject != null)
-        {
-            children = new GameObject[parentObject.transform.childCount];
-            for (int i = 0; i < parentObject.transform.childCount; i++)
-            {
-                children[i] = parentObject.transform.GetChild(i).gameObject;
-            }
-
-            GameObject randomChild = GetRandomChildObject();
-            Debug.Log("Atsitiktinai pasirinktas vaikinis GameObject: " + randomChild.name);
-        }
-        else
-        {
-            Debug.LogError("ParentObject is not assigned!");
-        }
+       
     }
+
     void Update()
     {
-        if (!hasSpawned)
+        if (!hasSpawned) 
         {
             Position();
             spawnObject();
-            hasSpawned = true;
+            hasSpawned = true; 
         }
     }
 
@@ -45,12 +31,6 @@ public class SpawnObject : MonoBehaviour
 
     void spawnObject()
     {
-        Instantiate(alienObject, location, Quaternion.identity);
-    }
-
-    GameObject GetRandomChildObject()
-    {
-        int randomIndex = Random.Range(0, children.Length);
-        return children[randomIndex];
+        Instantiate(ailienObject, location, Quaternion.identity);
     }
 }

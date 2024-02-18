@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 948417062796287069}
   - component: {fileID: -7300254779265683741}
   - component: {fileID: -2810508719348457699}
+  - component: {fileID: -4226738256516960131}
   m_Layer: 0
   m_Name: BlueAilien
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5186147399714830308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.5304213, y: 2.6148987, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -117,6 +118,18 @@ MonoBehaviour:
   - {fileID: 1669166748309911000, guid: 3670ddd0f77803146bdc5ee7f58061ab, type: 3}
   - {fileID: 8451273561137275608, guid: ae2ba4704ac2dbe40bb95f853aa593b4, type: 3}
   ailienCloud: {fileID: 3546058553907259559, guid: f111d40611794b34a9f0b6187ceaeda6, type: 3}
+--- !u!114 &-4226738256516960131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5186147399714830308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa5f01f8ba345534d89e1973cb2c6ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7858348284549553238
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4309776827535565439}
   - component: {fileID: 131551725577328509}
+  - component: {fileID: 8492882298007580205}
   m_Layer: 0
   m_Name: BlueChild
   m_TagString: Untagged
@@ -162,3 +176,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObject: {fileID: 4176578768980012092}
+--- !u!114 &8492882298007580205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858348284549553238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216fe267b5a607148a5f20f1b80fb96f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stopLocationsTag: StopLocation
