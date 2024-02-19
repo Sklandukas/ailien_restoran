@@ -6,6 +6,8 @@ public class StopGameObject : MonoBehaviour
     private GameObject mainObject;
     private Transform parentTransform;
     private Vector3 stopLocation;
+    public delegate void SpeedZeroEventHandler();
+    public static event SpeedZeroEventHandler OnSpeedZero;
 
     void Start()
     {
@@ -34,8 +36,9 @@ public class StopGameObject : MonoBehaviour
             var parentSpeedComponent = parentTransform.GetComponent<MoveForward>();
 
             if (parentSpeedComponent != null)
-            {
+            {   
                 parentSpeedComponent.Speed = 0f;
+                OnSpeedZero?.Invoke();
             }
             else
             {
