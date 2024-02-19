@@ -6,6 +6,8 @@ public class FoodOrder : MonoBehaviour
     public GameObject[] wishPrefabs;
     public GameObject DeliveryPlace;
     private bool hasSpawned = false;
+    private GameObject prefabInstance;
+    private bool isMessageDestroyed = false;
 
     private void Start()
     {
@@ -17,17 +19,24 @@ public class FoodOrder : MonoBehaviour
         StopGameObject.OnSpeedZero -= SpawnMessage;
     }
 
+    private void Update()
+    {
+        if (hasSpawned && !isMessageDestroyed)
+        {
+            CheckForNearbyFoodObjects(prefabInstance.transform.position, prefabInstance.name, Message);
+        }
+    }
+
     private void SpawnMessage()
     {
-        if (!hasSpawned) 
+        if (!hasSpawned)
         {
             Vector3 position = ParentLocation(transform.parent);
             Instantiate(Message, position, Quaternion.identity);
-            GameObject prefabInstance = SpawnAlienWish(position);
-            string prefabName = prefabInstance.name;
+            prefabInstance = SpawnAlienWish(position);
             Instantiate(DeliveryPlace, new Vector3(position.x, position.y - 3.65f, position.z), Quaternion.identity);
-            Debug.Log("Instancijuotas prefabas pavadinimu: " + prefabName);
-            hasSpawned = true; 
+            Debug.Log("Instancijuotas prefabas pavadinimu: " + prefabInstance.name);
+            hasSpawned = true;
         }
     }
 
@@ -52,7 +61,32 @@ public class FoodOrder : MonoBehaviour
     private GameObject SpawnAlienWish(Vector3 position)
     {
         int index = RandomFoodIndex();
-        GameObject prefabInstance = Instantiate(wishPrefabs[index], position, Quaternion.identity);
-        return prefabInstance;
+        GameObject instance = Instantiate(wishPrefabs[index], position, Quaternion.identity);
+        return instance;
+    }
+
+    private void CheckForNearbyFoodObjects(Vector3 position, string PrefabName, GameObject Message)
+    {
+        position = new Vector3(position.x, position.y - 3.65f, position.z);
+        GameObject[] nearbyObjects = GameObject.FindGameObjectsWithTag("Food");
+        foreach (GameObject obj in nearbyObjects)
+        {
+            if (Vector3.Distance(obj.transform.position, position) < 0.3f)
+            {
+                string objName = obj.name;
+                if (objName == PrefabName)
+                {
+                    DestroyImmediate(obj);
+                    DestroyImmediate(Message);
+                    DestroyImmediate(prefabInstance);
+                
+
+                }
+                else
+                {
+                    Destroy(obj);
+                }
+            }
+        }
     }
 }
