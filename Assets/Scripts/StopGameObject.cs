@@ -6,6 +6,7 @@ public class StopGameObject : MonoBehaviour
     private GameObject mainObject;
     private Transform parentTransform;
     private Vector3 stopLocation;
+    private bool isSpeedZero = false; // Būsena, kuri nurodo, ar greitis jau nustatytas į 0
     public delegate void SpeedZeroEventHandler();
     public static event SpeedZeroEventHandler OnSpeedZero;
 
@@ -31,14 +32,15 @@ public class StopGameObject : MonoBehaviour
 
     void Update()
     {
-        if (parentTransform != null && Vector3.Distance(parentTransform.position, stopLocation) < 0.1f)
+        if (!isSpeedZero && parentTransform != null && Vector3.Distance(parentTransform.position, stopLocation) < 0.1f)
         {
             var parentSpeedComponent = parentTransform.GetComponent<MoveForward>();
 
             if (parentSpeedComponent != null)
-            {   
+            {   Debug.LogError("RASTA");
                 parentSpeedComponent.Speed = 0f;
                 OnSpeedZero?.Invoke();
+                isSpeedZero = true; // Nustatome, kad greitis jau yra nustatytas į 0
             }
             else
             {

@@ -7,10 +7,12 @@ public class FoodOrder : MonoBehaviour
     public GameObject DeliveryPlace;
     private bool hasSpawned = false;
     private GameObject prefabInstance;
-    private GameObject spawnedMessage; 
-
+    private GameObject spawnedMessage;
+    private GameObject mainObject;
+    private Transform parentTransform; // Added variable for parent transform
     private bool isStopped = false;
     private bool alreadyDestroyed = false;
+    private bool speedResetCalled = false;
 
     private void Start()
     {
@@ -20,13 +22,14 @@ public class FoodOrder : MonoBehaviour
     private void OnDestroy()
     {   
         StopGameObject.OnSpeedZero -= SpawnMessage;
+        SpeedReset(); // Call SpeedReset() when object is destroyed
     }
 
     private void Update()
     {
         if (prefabInstance != null)
         {
-            CheckForNearbyFoodObjects(prefabInstance.transform.position, prefabInstance.name, Message);
+            CheckForNearbyFoodObjects(prefabInstance.transform.position, prefabInstance.name, spawnedMessage); // Change 'Message' to 'spawnedMessage'
         }
     }
 
@@ -35,7 +38,7 @@ public class FoodOrder : MonoBehaviour
         if (!hasSpawned)
         {
             Vector3 position = ParentLocation(transform.parent);
-            spawnedMessage = Instantiate(Message, position, Quaternion.identity); // Instantiate message object
+            spawnedMessage = Instantiate(Message, position, Quaternion.identity); 
             prefabInstance = SpawnAlienWish(position);
             Instantiate(DeliveryPlace, new Vector3(position.x, position.y - 3.65f, position.z), Quaternion.identity);
             Debug.Log("Instancijuotas prefabas pavadinimu: " + prefabInstance.name);
@@ -87,6 +90,7 @@ public class FoodOrder : MonoBehaviour
                     Destroy(prefabInstance);
                     isStopped = true;
                     alreadyDestroyed = true;
+                    SpeedReset();
                     return; 
                 }
                 else
@@ -96,4 +100,30 @@ public class FoodOrder : MonoBehaviour
             }
         }
     }
+    void SpeedReset()
+    {
+        if (!speedResetCalled) 
+        {
+            if (transform.parent != null) 
+            {
+                MoveForward parentSpeedComponent = transform.parent.GetComponent<MoveForward>(); // Gauti MoveForward komponentą iš tėvinio objekto
+                if (parentSpeedComponent != null) // Patikrinkite, ar komponentas egzistuoja
+                {
+                    Debug.LogError("Nujas greiut");
+                    parentSpeedComponent.Speed = 15.0f; // Nustatyti greitį į 15
+                }
+                else
+                {
+                    Debug.LogWarning("Parent object does not have MoveForward component.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("This object has no parent.");
+            }
+
+            speedResetCalled = true; // Pažymime, kad metodas jau buvo iškviestas
+        }
+    }
+
 }
