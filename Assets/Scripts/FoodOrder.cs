@@ -7,7 +7,10 @@ public class FoodOrder : MonoBehaviour
     public GameObject DeliveryPlace;
     private bool hasSpawned = false;
     private GameObject prefabInstance;
-    private bool isMessageDestroyed = false;
+    private GameObject spawnedMessage; 
+
+    private bool isStopped = false;
+    private bool alreadyDestroyed = false;
 
     private void Start()
     {
@@ -15,13 +18,13 @@ public class FoodOrder : MonoBehaviour
     }
 
     private void OnDestroy()
-    {
+    {   
         StopGameObject.OnSpeedZero -= SpawnMessage;
     }
 
     private void Update()
     {
-        if (hasSpawned && !isMessageDestroyed)
+        if (prefabInstance != null)
         {
             CheckForNearbyFoodObjects(prefabInstance.transform.position, prefabInstance.name, Message);
         }
@@ -32,7 +35,7 @@ public class FoodOrder : MonoBehaviour
         if (!hasSpawned)
         {
             Vector3 position = ParentLocation(transform.parent);
-            Instantiate(Message, position, Quaternion.identity);
+            spawnedMessage = Instantiate(Message, position, Quaternion.identity); // Instantiate message object
             prefabInstance = SpawnAlienWish(position);
             Instantiate(DeliveryPlace, new Vector3(position.x, position.y - 3.65f, position.z), Quaternion.identity);
             Debug.Log("Instancijuotas prefabas pavadinimu: " + prefabInstance.name);
@@ -76,11 +79,15 @@ public class FoodOrder : MonoBehaviour
                 string objName = obj.name;
                 if (objName == PrefabName)
                 {
-                    DestroyImmediate(obj);
-                    DestroyImmediate(Message);
-                    DestroyImmediate(prefabInstance);
-                
-
+                    Destroy(obj);
+                    if (spawnedMessage != null && spawnedMessage.activeSelf)
+                    {
+                        Destroy(spawnedMessage); 
+                    }
+                    Destroy(prefabInstance);
+                    isStopped = true;
+                    alreadyDestroyed = true;
+                    return; 
                 }
                 else
                 {

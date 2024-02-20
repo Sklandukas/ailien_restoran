@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dbba469aaae099428b8022eb328f704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Message: {fileID: 3546058553907259559, guid: f111d40611794b34a9f0b6187ceaeda6, type: 3}
+  Message: {fileID: 1975691143726591143, guid: 9e09b43b68726d2468d57e6e87d3e858, type: 3}
   wishPrefabs:
   - {fileID: 7561683642589267451, guid: 7ca86233362e66a40b1556db4d96b317, type: 3}
   - {fileID: 1669166748309911000, guid: 3670ddd0f77803146bdc5ee7f58061ab, type: 3}
