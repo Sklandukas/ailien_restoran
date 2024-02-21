@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class FoodOrder : MonoBehaviour
 {
@@ -9,11 +10,13 @@ public class FoodOrder : MonoBehaviour
     private GameObject prefabInstance;
     private GameObject spawnedMessage;
     private GameObject mainObject;
-    private Transform parentTransform; // Added variable for parent transform
+    private Transform parentTransform; 
     private bool isStopped = false;
     private bool alreadyDestroyed = false;
     private bool speedResetCalled = false;
-
+    public PointsCounter pointsCounter;
+    public delegate void MyEventHandler();
+    public static event MyEventHandler OnMyEvent;
     private void Start()
     {
         StopGameObject.OnSpeedZero += SpawnMessage;
@@ -22,14 +25,14 @@ public class FoodOrder : MonoBehaviour
     private void OnDestroy()
     {   
         StopGameObject.OnSpeedZero -= SpawnMessage;
-        SpeedReset(); // Call SpeedReset() when object is destroyed
+        SpeedReset(); 
     }
 
     private void Update()
     {
         if (prefabInstance != null)
         {
-            CheckForNearbyFoodObjects(prefabInstance.transform.position, prefabInstance.name, spawnedMessage); // Change 'Message' to 'spawnedMessage'
+            CheckForNearbyFoodObjects(prefabInstance.transform.position, prefabInstance.name, spawnedMessage);
         }
     }
 
@@ -61,7 +64,7 @@ public class FoodOrder : MonoBehaviour
 
     private int RandomFoodIndex()
     {
-        return Random.Range(0, wishPrefabs.Length);
+        return UnityEngine.Random.Range(0, wishPrefabs.Length);
     }
 
     private GameObject SpawnAlienWish(Vector3 position)
@@ -91,6 +94,7 @@ public class FoodOrder : MonoBehaviour
                     isStopped = true;
                     alreadyDestroyed = true;
                     SpeedReset();
+                    OnMyEvent?.Invoke();
                     return; 
                 }
                 else
@@ -106,11 +110,11 @@ public class FoodOrder : MonoBehaviour
         {
             if (transform.parent != null) 
             {
-                MoveForward parentSpeedComponent = transform.parent.GetComponent<MoveForward>(); // Gauti MoveForward komponentą iš tėvinio objekto
-                if (parentSpeedComponent != null) // Patikrinkite, ar komponentas egzistuoja
+                MoveForward parentSpeedComponent = transform.parent.GetComponent<MoveForward>(); 
+                if (parentSpeedComponent != null) 
                 {
                     Debug.LogError("Nujas greiut");
-                    parentSpeedComponent.Speed = 15.0f; // Nustatyti greitį į 15
+                    parentSpeedComponent.Speed = 15.0f; 
                 }
                 else
                 {
@@ -122,8 +126,7 @@ public class FoodOrder : MonoBehaviour
                 Debug.LogWarning("This object has no parent.");
             }
 
-            speedResetCalled = true; // Pažymime, kad metodas jau buvo iškviestas
+            speedResetCalled = true;
         }
     }
-
 }
