@@ -14,7 +14,6 @@ public class FoodOrder : MonoBehaviour
     private bool isStopped = false;
     private bool alreadyDestroyed = false;
     private bool speedResetCalled = false;
-    public PointsCounter pointsCounter;
     public delegate void MyEventHandler();
     public static event MyEventHandler OnMyEvent;
     private void Start()

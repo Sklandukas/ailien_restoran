@@ -5,32 +5,17 @@ using UnityEngine;
 public class SpawnObject : MonoBehaviour
 {
     public GameObject spawnLocation;
-    public GameObject ailienObject;
-    public Vector3 location; 
-    private bool hasSpawned = false;
+    public GameObject objectToSpawn;
+    public float spawnInterval = 8; 
 
     void Start()
     {
-       
+        InvokeRepeating("Spawn", 0f, spawnInterval);
     }
 
-    void Update()
+    void Spawn()
     {
-        if (!hasSpawned) 
-        {
-            Position();
-            spawnObject();
-            hasSpawned = true; 
-        }
-    }
-
-    void Position()
-    {
-        location = spawnLocation.transform.position;
-    }
-
-    void spawnObject()
-    {
-        Instantiate(ailienObject, location, Quaternion.identity);
+        Vector3 location = spawnLocation.transform.position;
+        Instantiate(objectToSpawn, location, Quaternion.identity);
     }
 }
