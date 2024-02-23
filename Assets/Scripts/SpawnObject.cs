@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SpawnObject : MonoBehaviour
 {
-    public GameObject spawnLocation;
-    public GameObject objectToSpawn;
-    public float spawnInterval = 8; 
+    public GameObject[] spawnLocations;
+    public GameObject[] alienPrefabs;
+    public float spawnInterval = 1;
 
     void Start()
     {
@@ -15,7 +15,16 @@ public class SpawnObject : MonoBehaviour
 
     void Spawn()
     {
-        Vector3 location = spawnLocation.transform.position;
-        Instantiate(objectToSpawn, location, Quaternion.identity);
+        int locationIndex = Random.Range(0, spawnLocations.Length);
+        Vector3 location = spawnLocations[locationIndex].transform.position;
+        int alienIndex = Random.Range(0, alienPrefabs.Length);
+
+        if (alienIndex < 0 || alienIndex >= alienPrefabs.Length)
+        {
+            Debug.LogError("Netinkamas alienIndex: " + alienIndex);
+            return;
+        }
+
+        Instantiate(alienPrefabs[alienIndex], location, Quaternion.identity);
     }
 }
